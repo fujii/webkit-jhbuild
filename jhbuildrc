@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+import sys
+import os
+
+_top_dir = os.path.dirname(__file__)
+
+buildroot = os.path.join(_top_dir, 'build')
+prefix = os.path.join(_top_dir, 'install')
+tarballdir = os.path.join(_top_dir, 'downloads')
+checkoutroot = os.path.join(_top_dir, 'checkout')
+
+moduleset = [ os.path.join(_top_dir, 'webkit.modules') ]
+modules = [ 'webkit-deps' ]

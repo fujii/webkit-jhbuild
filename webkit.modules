@@ -1,0 +1,223 @@
+<?xml version="1.0"?>
+<!DOCTYPE moduleset SYSTEM "moduleset.dtd">
+<?xml-stylesheet type="text/xsl" href="moduleset.xsl"?>
+<moduleset>
+
+  <metamodule id="webkit-deps">
+    <dependencies>
+      <dep package="dicts"/>
+      <dep package="libwpe"/>
+      <dep package="libsoup"/>
+      <dep package="wpebackend-fdo"/>
+      <dep package="gst-plugins-rs"/>
+      <dep package="gstreamer"/>
+      <dep package="sparkle-cdm"/>
+      <dep package="libbacktrace"/>
+      <dep package="sysprof"/>
+      <dep package="libspiel"/>
+    </dependencies>
+  </metamodule>
+
+  <!-- Please use http/https to access repositories to be friendly to users stuck behind firewalls. -->
+  <repository type="system" name="system"/>
+  <repository type="tarball" name="wpewebkit.org"
+      href="https://wpewebkit.org/releases/"/>
+  <repository type="tarball" name="xmlsoft.org"
+      href="http://xmlsoft.org"/>
+  <repository type="git" name="gstreamer.freedesktop.org"
+      href="https://gitlab.freedesktop.org/gstreamer"/>
+  <repository type="tarball" name="github-tarball"
+      href="https://github.com/"/>
+  <repository type="git" name="github.com"
+      href="https://github.com"/>
+  <repository type="git" name="gitlab.gnome.org"
+      href="https://gitlab.gnome.org/"/>
+
+  <meson id="sparkle-cdm">
+    <branch repo="github.com"
+            checkoutdir="sparkle-cdm"
+            module="Sparkle-CDM/sparkle-cdm"/>
+  </meson>
+
+  <autotools id="dicts" supports-non-srcdir-builds="no"
+             skip-autogen="true">
+  <branch repo="github.com"
+          checkoutdir="webkitgtk-test-dicts"
+          module="mrobinson/webkitgtk-test-dicts.git"
+          tag="0.0.1"/>
+  </autotools>
+
+  <cmake id="libwpe">
+    <branch repo="wpewebkit.org"
+            checkoutdir="libwpe"
+            module="libwpe-${version}.tar.xz"
+            version="1.16.2"
+            hash="sha256:960bdd11c3f2cf5bd91569603ed6d2aa42fd4000ed7cac930a804eac367888d7"/>
+  </cmake>
+
+  <meson id="wpebackend-fdo">
+    <dependencies>
+      <dep package="libwpe"/>
+    </dependencies>
+    <branch repo="wpewebkit.org"
+            checkoutdir="wpebackend-fdo"
+            module="wpebackend-fdo-${version}.tar.xz"
+            version="1.14.3"
+            hash="sha256:10121842595a850291db3e82f3db0b9984df079022d386ce42c2b8508159dc6c">
+    </branch>
+  </meson>
+
+  <meson id="gtk4" mesonargs="-Dbuild-demos=false -Dbuild-examples=false -Dbuild-tests=false -Dbuild-testsuite=false">
+    <branch repo="github.com"
+            checkoutdir="gtk4"
+            module="GNOME/gtk.git" tag="4.16.2"/>
+  </meson>
+
+  <meson id="libadwaita" mesonargs="-Dexamples=false -Dgtk_doc=true -Dtests=false -Dvapi=false">
+    <branch repo="github.com"
+            module="GNOME/libadwaita.git" tag="1.6.0"/>
+    <dependencies>
+      <dep package="gtk4"/>
+      <dep package="sassc"/>
+    </dependencies>
+  </meson>
+
+  <autotools id="libbacktrace" autogenargs="--enable-host-shared">
+    <branch repo="github.com"
+            module="ianlancetaylor/libbacktrace.git"
+            checkoutdir="libbacktrace"/>
+  </autotools>
+
+  <meson id="libspiel" mesonargs="-Dtests=false -Ddocs=false -Dlibspeechprovider:docs=false -Dlibspeechprovider:introspection=false">
+    <branch repo="github.com"
+            checkoutdir="libspiel"
+            module="project-spiel/libspiel"/>
+    <dependencies>
+      <dep package="gstreamer"/>
+    </dependencies>
+  </meson>
+
+  <meson id="openh264" mesonargs="-Dtests=disabled">
+    <branch repo="github.com"
+            checkoutdir="openh264"
+            module="cisco/openh264.git"
+            tag="v2.6.0" >
+    </branch>
+  </meson>
+
+  <meson id="gstreamer" mesonargs="-Dlibnice=enabled -Dpython=enabled -Dintrospection=enabled -Dgst-plugins-bad:microdns=disabled -Dgst-plugins-bad:avtp=disabled -Dgst-examples=disabled -Dexamples=disabled -Dtests=disabled -Ddoc=disabled -Dgtk_doc=disabled -Dwebrtc=enabled -Dgst-plugins-ugly:gpl=enabled -Dgst-plugins-bad:gpl=enabled -Dgpl=enabled">
+    <branch repo="gstreamer.freedesktop.org"
+            checkoutdir="gstreamer"
+            module="gstreamer.git"
+            tag="1.26.6"/>
+    <dependencies>
+      <dep package="openh264"/>
+    </dependencies>
+  </meson>
+
+  <meson id="dav1d" mesonargs="-Denable_examples=false -Denable_tests=false -Denable_tools=false -Dxxhash_muxer=disabled">
+    <branch repo="github.com"
+            module="videolan/dav1d.git"
+            tag="1.4.2"
+            version="1.4.2" />
+  </meson>
+
+  <meson id="gst-plugins-rs" mesonargs="-Ddoc=disabled -Dexamples=disabled -Dtests=disabled --auto-features=disabled -Daudiofx=enabled -Dclosedcaption=enabled -Ddav1d=enabled -Drtp=enabled -Dfmp4=enabled">
+    <dependencies>
+      <dep package="dav1d"/>
+      <dep package="gstreamer"/>
+    </dependencies>
+    <branch repo="gstreamer.freedesktop.org"
+            module="gst-plugins-rs"
+            tag="gstreamer-1.26.4" />
+  </meson>
+
+  <meson id="glib" mesonargs="--localstatedir=/var -Dlibmount=disabled -Dtests=false">
+    <branch repo="github.com"
+            checkoutdir="glib"
+            module="GNOME/glib.git" tag="2.82.1"/>
+  </meson>
+
+  <meson id="glib-networking">
+    <branch repo="github.com"
+            checkoutdir="glib-networking"
+            module="GNOME/glib-networking.git" tag="2.80.0"/>
+    <dependencies>
+      <dep package="glib"/>
+    </dependencies>
+  </meson>
+
+  <meson id="libsoup" mesonargs="-Dtests=false">
+    <branch repo="github.com"
+            checkoutdir="libsoup"
+            module="GNOME/libsoup.git" tag="3.6.0"/>
+  </meson>
+
+  <!-- Everything in this section is just for Epiphany. -->
+  <systemmodule id="sassc">
+    <branch repo="system"/>
+    <systemdependencies>
+      <dep type="path" name="sassc" />
+    </systemdependencies>
+  </systemmodule>
+
+  <systemmodule id="gcr">
+    <pkg-config>gcr-4.pc</pkg-config>
+    <branch repo="system" version="3.9.0" />
+  </systemmodule>
+
+  <systemmodule id="libarchive">
+    <pkg-config>libarchive.pc</pkg-config>
+    <branch repo="system"/>
+  </systemmodule>
+
+  <systemmodule id="libportal-gtk4">
+    <pkg-config>libportal-gtk4.pc</pkg-config>
+    <branch repo="system" version="0.6" />
+  </systemmodule>
+
+  <meson id="epiphany">
+    <branch repo="github.com"
+            module="GNOME/epiphany.git" tag="47.0"/>
+    <dependencies>
+      <dep package="gcr"/>
+      <dep package="libarchive"/>
+      <dep package="libportal-gtk4"/>
+      <dep package="libadwaita"/>
+    </dependencies>
+  </meson>
+
+  <!-- Everything in this section is just for sysprof. -->
+  <meson id="libpanel" mesonargs="-Dvapi=false">
+    <branch repo="github.com"
+            module="GNOME/libpanel.git" tag="1.8.0"/>
+    <dependencies>
+      <dep package="libadwaita"/>
+    </dependencies>
+  </meson>
+
+  <meson id="libdex" mesonargs="-Dvapi=false">
+    <branch repo="github.com"
+            module="GNOME/libdex.git" tag="0.8.0"/>
+  </meson>
+
+  <meson id="sysprof" mesonargs="-Dexamples=false -Dpolkit-agent=disabled -Dsysprofd=host -Dtests=false">
+    <branch repo="github.com"
+            module="GNOME/sysprof.git" tag="47.0">
+    </branch>
+    <dependencies>
+      <dep package="libadwaita"/>
+      <dep package="libdex"/>
+      <dep package="libpanel"/>
+    </dependencies>
+  </meson>
+
+  <!-- Everything in this section is optional to aid in debugging. -->
+  <cmake id="nghttp2" cmakeargs="-DENABLE_DEBUG=ON -DENABLE_LIB_ONLY=ON -DENABLE_DOC=OFF">
+    <branch repo="github.com"
+            module="nghttp2/nghttp2"
+            tag="v1.64.0"
+    />
+  </cmake>
+
+</moduleset>
