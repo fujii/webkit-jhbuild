@@ -2,6 +2,10 @@
 import sys
 import os
 
+# Use the same compilers with wkdev SDK to avoid problems
+os.environ['CC'] = 'gcc-14'
+os.environ['CXX'] = 'g++-14'
+
 _top_dir = os.path.dirname(__file__)
 
 buildroot = os.path.join(_top_dir, 'build')
