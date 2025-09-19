@@ -32,6 +32,8 @@
       href="https://github.com"/>
   <repository type="git" name="gitlab.gnome.org"
       href="https://gitlab.gnome.org/"/>
+  <repository type="git" name="freedesktop"
+      href="https://gitlab.freedesktop.org/"/>
 
   <meson id="sparkle-cdm">
     <branch repo="github.com"
@@ -152,6 +154,19 @@
             checkoutdir="libsoup"
             module="GNOME/libsoup.git" tag="3.6.0"/>
   </meson>
+
+  <cmake id="openxr">
+    <branch repo="github-tarball"
+            checkoutdir="openxr"
+            module="KhronosGroup/OpenXR-SDK-Source/releases/download/release-${version}/OpenXR-SDK-Source-release-${version}.tar.gz"
+	    version="1.1.51"/>
+  </cmake>
+
+  <cmake id="monado">
+    <branch repo="freedesktop"
+            checkoutdir="monado"
+            module="monado/monado.git"/>
+  </cmake>
 
   <!-- Everything in this section is just for Epiphany. -->
   <systemmodule id="sassc">
