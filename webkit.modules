@@ -15,6 +15,7 @@
       <dep package="libbacktrace"/>
       <dep package="sysprof"/>
       <dep package="libspiel"/>
+      <dep package="monado"/>
     </dependencies>
   </metamodule>
 
@@ -24,16 +25,14 @@
       href="https://wpewebkit.org/releases/"/>
   <repository type="tarball" name="xmlsoft.org"
       href="http://xmlsoft.org"/>
-  <repository type="git" name="gstreamer.freedesktop.org"
-      href="https://gitlab.freedesktop.org/gstreamer"/>
+  <repository type="git" name="freedesktop.org"
+      href="https://gitlab.freedesktop.org/"/>
   <repository type="tarball" name="github-tarball"
       href="https://github.com/"/>
   <repository type="git" name="github.com"
       href="https://github.com"/>
   <repository type="git" name="gitlab.gnome.org"
       href="https://gitlab.gnome.org/"/>
-  <repository type="git" name="freedesktop"
-      href="https://gitlab.freedesktop.org/"/>
 
   <meson id="sparkle-cdm">
     <branch repo="github.com"
@@ -107,10 +106,10 @@
     </branch>
   </meson>
 
-  <meson id="gstreamer" mesonargs="-Dlibnice=enabled -Dpython=enabled -Dintrospection=enabled -Dgst-plugins-bad:microdns=disabled -Dgst-plugins-bad:avtp=disabled -Dgst-examples=disabled -Dexamples=disabled -Dtests=disabled -Ddoc=disabled -Dgtk_doc=disabled -Dwebrtc=enabled -Dgst-plugins-ugly:gpl=enabled -Dgst-plugins-bad:gpl=enabled -Dgpl=enabled">
-    <branch repo="gstreamer.freedesktop.org"
+  <meson id="gstreamer" mesonargs="-Dlibnice=enabled -Dpython=disabled -Dintrospection=disabled -Dgst-plugins-bad:microdns=disabled -Dgst-plugins-bad:avtp=disabled -Dgst-examples=disabled -Dexamples=disabled -Dtests=disabled -Ddoc=disabled -Dgtk_doc=disabled -Dwebrtc=enabled -Dgst-plugins-ugly:gpl=enabled -Dgst-plugins-bad:gpl=enabled -Dgpl=enabled -Dgst-plugins-bad:webrtcdsp=disabled -Dges=disabled -Drtsp_server=disabled -Dqt5=disabled -Dqt6=disabled">
+    <branch repo="freedesktop.org"
             checkoutdir="gstreamer"
-            module="gstreamer.git"
+            module="gstreamer/gstreamer.git"
             tag="1.26.6"/>
     <dependencies>
       <dep package="openh264"/>
@@ -129,9 +128,11 @@
       <dep package="dav1d"/>
       <dep package="gstreamer"/>
     </dependencies>
-    <branch repo="gstreamer.freedesktop.org"
-            module="gst-plugins-rs"
-            tag="gstreamer-1.26.4" />
+    <branch repo="freedesktop.org"
+            module="gstreamer/gst-plugins-rs"
+            tag="gstreamer-1.26.6">
+      <patch file="0001-Revert-meson-Isolate-built-plugins-from-cargo-target.patch"/>
+    </branch>
   </meson>
 
   <meson id="glib" mesonargs="--localstatedir=/var -Dlibmount=disabled -Dtests=false">
@@ -155,17 +156,10 @@
             module="GNOME/libsoup.git" tag="3.6.0"/>
   </meson>
 
-  <cmake id="openxr">
-    <branch repo="github-tarball"
-            checkoutdir="openxr"
-            module="KhronosGroup/OpenXR-SDK-Source/releases/download/release-${version}/OpenXR-SDK-Source-release-${version}.tar.gz"
-	    version="1.1.51"/>
-  </cmake>
-
   <cmake id="monado">
-    <branch repo="freedesktop"
-            checkoutdir="monado"
-            module="monado/monado.git"/>
+    <branch repo="freedesktop.org"
+	    checkoutdir="monado"
+	    module="monado/monado.git" tag="v25.0.0"/>
   </cmake>
 
   <!-- Everything in this section is just for Epiphany. -->
