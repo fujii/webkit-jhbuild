@@ -16,6 +16,8 @@
       <dep package="sysprof"/>
       <dep package="libspiel"/>
       <dep package="monado"/>
+      <dep package="openxr"/>
+      <dep package="gi-docgen"/>
     </dependencies>
   </metamodule>
 
@@ -37,6 +39,7 @@
   <meson id="sparkle-cdm">
     <branch repo="github.com"
             checkoutdir="sparkle-cdm"
+            tag="2026.2"
             module="Sparkle-CDM/sparkle-cdm"/>
   </meson>
 
@@ -48,12 +51,12 @@
           tag="0.0.1"/>
   </autotools>
 
-  <cmake id="libwpe">
+  <cmake id="libwpe" cmakeargs="-DCMAKE_POLICY_VERSION_MINIMUM=3.5">
     <branch repo="wpewebkit.org"
             checkoutdir="libwpe"
             module="libwpe-${version}.tar.xz"
-            version="1.16.2"
-            hash="sha256:960bdd11c3f2cf5bd91569603ed6d2aa42fd4000ed7cac930a804eac367888d7"/>
+            version="1.16.3"
+            hash="sha256:c880fa8d607b2aa6eadde7d6d6302b1396ebc38368fe2332fa20e193c7ee1420"/>
   </cmake>
 
   <meson id="wpebackend-fdo">
@@ -63,8 +66,8 @@
     <branch repo="wpewebkit.org"
             checkoutdir="wpebackend-fdo"
             module="wpebackend-fdo-${version}.tar.xz"
-            version="1.14.3"
-            hash="sha256:10121842595a850291db3e82f3db0b9984df079022d386ce42c2b8508159dc6c">
+            version="1.16.1"
+            hash="sha256:544ae14012f8e7e426b8cb522eb0aaaac831ad7c35601d1cf31d37670e0ebb3b">
     </branch>
   </meson>
 
@@ -153,8 +156,26 @@
   <meson id="libsoup" mesonargs="-Dtests=false">
     <branch repo="github.com"
             checkoutdir="libsoup"
-            module="GNOME/libsoup.git" tag="3.6.0"/>
+            module="GNOME/libsoup.git" tag="3.7.3"/>
   </meson>
+
+  <meson id="gi-docgen" mesonargs="-Ddevelopment_tests=false">
+    <branch repo="github-tarball"
+            checkoutdir="gi-docgen"
+            module="GNOME/gi-docgen/archive/14294d53a3d7b07a1a5735fad8eb36206b25fc96.tar.gz"
+            rename-tarball="gi-docgen.tar.gz"
+            version="2026.2"
+            hash="sha256:bc3ef2da7ffb2084fb223736a779626ad4c95715b4308cf7ff38562c6016883f"/>
+  </meson>
+
+  <cmake id="openxr">
+    <branch repo="github-tarball"
+	    checkoutdir="openxr"
+	    module="KhronosGroup/OpenXR-SDK/archive/refs/tags/release-${version}.tar.gz"
+	    rename-tarball="OpenXR-SDK-release-${version}.tar.gz"
+	    version="1.1.59.1"
+	    hash="sha256:f66c1a308a60556c79b723cb0b14bcc51913de8382632ba19af2d5eaf54add50"/>
+  </cmake>
 
   <cmake id="monado">
     <branch repo="freedesktop.org"

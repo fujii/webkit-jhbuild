@@ -2,9 +2,9 @@
 import sys
 import os
 
-# Use the same compilers with wkdev SDK to avoid problems
-os.environ['CC'] = 'gcc-14'
-os.environ['CXX'] = 'g++-14'
+# Use the host's default compiler.
+os.environ.pop('CC', None)
+os.environ.pop('CXX', None)
 
 _top_dir = os.path.dirname(__file__)
 
