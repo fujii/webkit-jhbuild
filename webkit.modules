@@ -14,6 +14,7 @@
       <dep package="sparkle-cdm"/>
       <dep package="libbacktrace"/>
       <dep package="sysprof"/>
+      <dep package="libspeechprovider"/>
       <dep package="libspiel"/>
       <dep package="monado"/>
       <dep package="openxr"/>
@@ -92,12 +93,25 @@
             checkoutdir="libbacktrace"/>
   </autotools>
 
-  <meson id="libspiel" mesonargs="-Dtests=false -Ddocs=false -Dlibspeechprovider:docs=false -Dlibspeechprovider:introspection=false">
-    <branch repo="github.com"
+  <meson id="libspeechprovider" mesonargs="-Dtests=false -Ddocs=false -Dintrospection=false">
+    <branch repo="github-tarball"
+            checkoutdir="libspeechprovider"
+            module="project-spiel/libspeechprovider/archive/ea8cd1fb2ebf7b9adda869fd19ce53cfc6b36ffd.tar.gz"
+            rename-tarball="libspeechprovider.tar.gz"
+            version="1.0.3"
+            hash="sha256:f0822d1c43fc409d40bc610f1ca9df3b7b76d44142d0dbecffe2e5ed9017bcc3"/>
+  </meson>
+
+  <meson id="libspiel" mesonargs="-Dtests=false -Ddocs=false --wrap-mode=nodownload">
+    <branch repo="github-tarball"
             checkoutdir="libspiel"
-            module="project-spiel/libspiel"/>
+            module="project-spiel/libspiel/archive/adceb561f10cd0db335503b95273177b1a2b73b5.tar.gz"
+            rename-tarball="libspiel.tar.gz"
+            version="1.0.5"
+            hash="sha256:66f973322f4385348f3b4847bbbea12c2a6feeeac622276aeb92b569272a6b34"/>
     <dependencies>
       <dep package="gstreamer"/>
+      <dep package="libspeechprovider"/>
     </dependencies>
   </meson>
 
@@ -109,7 +123,7 @@
     </branch>
   </meson>
 
-  <meson id="gstreamer" mesonargs="-Dlibnice=enabled -Dpython=disabled -Dintrospection=disabled -Dgst-plugins-bad:microdns=disabled -Dgst-plugins-bad:avtp=disabled -Dgst-examples=disabled -Dexamples=disabled -Dtests=disabled -Ddoc=disabled -Dgtk_doc=disabled -Dwebrtc=enabled -Dgst-plugins-ugly:gpl=enabled -Dgst-plugins-bad:gpl=enabled -Dgpl=enabled -Dgst-plugins-bad:webrtcdsp=disabled -Dges=disabled -Drtsp_server=disabled -Dqt5=disabled -Dqt6=disabled">
+  <meson id="gstreamer" mesonargs="-Dlibnice=enabled -Dpython=disabled -Dintrospection=disabled -Dgst-plugins-bad:microdns=disabled -Dgst-plugins-bad:avtp=disabled -Dgst-examples=disabled -Dexamples=disabled -Dtests=disabled -Ddoc=disabled -Dgtk_doc=disabled -Dwebrtc=enabled -Dgst-plugins-ugly:gpl=enabled -Dgst-plugins-bad:gpl=enabled -Dgpl=enabled -Dgst-plugins-bad:webrtcdsp=disabled -Dges=disabled -Drtsp_server=disabled -Dqt5=disabled -Dqt6=disabled -Ddevtools=disabled">
     <branch repo="freedesktop.org"
             checkoutdir="gstreamer"
             module="gstreamer/gstreamer.git"

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Install the host packages needed to build the webkit-deps moduleset
+# on Fedora. Run with sudo (or as root).
+set -euo pipefail
+
+sudo -n dnf install -y \
+  meson ninja cmake autoconf automake libtool \
+  gettext gettext-devel gtk-doc rust cargo cargo-c bison flex \
+  pkgconf-pkg-config git
+
+# gettext-devel keeps gettext.m4 under gettext's private m4/ directory, where
+# aclocal does not search by default. Expose it so autotools modules that run
+# autoreconf can find the macro.
+if [ ! -e /usr/share/aclocal/gettext.m4 ]; then
+  sudo -n ln -s /usr/share/gettext/m4/gettext.m4 /usr/share/aclocal/gettext.m4
+fi
+
+echo "OK: requirements installed."

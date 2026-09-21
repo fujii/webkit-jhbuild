@@ -13,5 +13,10 @@ prefix = os.path.join(_top_dir, 'install')
 tarballdir = os.path.join(_top_dir, 'downloads')
 checkoutroot = os.path.join(_top_dir, 'checkout')
 
+# jhbuild sets CMAKE_PREFIX_PATH to `prefix` only, which hides the system CMake
+# package directory (/usr/lib64/cmake) from cmake-based projects (e.g. WebKit
+# looks for VolkConfig.cmake there). Keep the system prefixes too.
+os.environ['CMAKE_PREFIX_PATH'] = prefix + ':/usr/local:/usr'
+
 moduleset = [ os.path.join(_top_dir, 'webkit.modules') ]
 modules = [ 'webkit-deps' ]

@@ -64,14 +64,28 @@ sudo ln -sf /usr/share/gettext/m4/gettext.m4 /usr/share/aclocal/gettext.m4
 
 ## Usage
 
-Run jhbuild from anywhere, pointing `-f` at this repository's `jhbuildrc`:
+A `Makefile` provides short `make` wrappers around jhbuild:
+
+```console
+make requirements   # installs Fedora packages (calls install-requirements-dnf)
+make list           # list what would be built
+make clean          # remove build/ and install/
+make                # build
+```
+
+`make clean` removes `build/` and `install/` outright (a full clean). It does not
+use `jhbuild clean`, which only runs `ninja clean` per module and errors on
+modules whose build directory does not exist.
+
+The `make` targets are thin wrappers; the underlying jhbuild invocation is
+equivalent to running jhbuild by hand, pointing `-f` at this repository's
+`jhbuildrc`:
 
 ```console
 # List what would be built
 jhbuild -f $this_work_copy_dir/jhbuildrc list
 
-# Clean / build
-jhbuild -f $this_work_copy_dir/jhbuildrc --no-interact clean
+# Build
 jhbuild -f $this_work_copy_dir/jhbuildrc --no-interact build
 
 # Run a command under the jhbuild environment (PATH + PKG_CONFIG_PATH set up)
@@ -113,6 +127,15 @@ jhbuild -f $this_work_copy_dir/jhbuildrc run bash -lc \
   copy can then be picked up during the new build's GObject-introspection link,
   causing `undefined reference` errors. Remove the stale files under `install/`
   (and `install/_jhbuild/`) for that module before rebuilding.
+- **System GStreamer clash**: gstreamer is built with `-Ddevtools=disabled` so it
+  does not try to link `gst-validate` against a system-installed
+  `libgstrtspserver`, which otherwise fails with an ABI mismatch (e.g. missing
+  `gst_state_get_name`) when the host's gstreamer version differs from the one
+  being built.
+- **monado needs Eigen**: monado's bundled `FindEigen3.cmake` reads the Eigen
+  version from a path that changed in Eigen 5.x, so `make` fails at monado's
+  configure step on a host with Eigen 5. WebKit itself does not use monado (only
+  openxr); build with `jhbuild ... build --skip=monado` if it is not needed.
 
 ## Keeping in sync with the SDK
 
