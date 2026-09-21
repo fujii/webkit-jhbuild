@@ -16,8 +16,8 @@
       <dep package="sysprof"/>
       <dep package="libspeechprovider"/>
       <dep package="libspiel"/>
-      <dep package="monado"/>
       <dep package="openxr"/>
+      <dep package="volk"/>
       <dep package="gi-docgen"/>
     </dependencies>
   </metamodule>
@@ -191,10 +191,14 @@
 	    hash="sha256:f66c1a308a60556c79b723cb0b14bcc51913de8382632ba19af2d5eaf54add50"/>
   </cmake>
 
-  <cmake id="monado">
-    <branch repo="freedesktop.org"
-	    checkoutdir="monado"
-	    module="monado/monado.git" tag="v25.0.0"/>
+  <!-- Vulkan meta-loader. WebKit's find_package(volk CONFIG) expects the
+       volk::volk / volk::volk_headers targets, which Fedora's GNU Radio
+       "volk" package does not provide. This is zeux/volk (not GNU Radio). -->
+  <cmake id="volk" cmakeargs="-DVOLK_INSTALL=ON">
+    <branch repo="github.com"
+            checkoutdir="volk"
+            module="zeux/volk.git"
+            tag="vulkan-sdk-1.4.341"/>
   </cmake>
 
   <!-- Everything in this section is just for Epiphany. -->
