@@ -33,7 +33,7 @@ The host needs these tools to run `jhbuild build`. All are looked up on `PATH`
 | --- | --- | --- |
 | `meson` | `meson` | Also needed at WebKit build time |
 | `ninja` | `ninja` | |
-| `cmake` | `cmake` | For cmake-based modules (libwpe, openxr, monado, ...) |
+| `cmake` | `cmake` | For cmake-based modules (libwpe, openxr, volk, ...) |
 | `autoconf` / `automake` / `libtool` | `autoconf automake libtool` | For autotools modules |
 | `gettext` / `autopoint` | `gettext gettext-devel` | Autotools modules need the gettext m4 macros visible to `aclocal` |
 | `gtkdocize` | `gtk-doc` | Only needed if any module runs `gtkdocize` |
@@ -132,10 +132,11 @@ jhbuild -f $this_work_copy_dir/jhbuildrc run bash -lc \
   `libgstrtspserver`, which otherwise fails with an ABI mismatch (e.g. missing
   `gst_state_get_name`) when the host's gstreamer version differs from the one
   being built.
-- **monado needs Eigen**: monado's bundled `FindEigen3.cmake` reads the Eigen
-  version from a path that changed in Eigen 5.x, so `make` fails at monado's
-  configure step on a host with Eigen 5. WebKit itself does not use monado (only
-  openxr); build with `jhbuild ... build --skip=monado` if it is not needed.
+- **Vulkan volk is built from source**: WebKit's `find_package(volk CONFIG)`
+  expects `volk::volk` / `volk::volk_headers` targets. Fedora's `volk` package is
+  GNU Radio's volk (not the Vulkan one) and does not provide them, so
+  `webkit.modules` builds zeux/volk (`vulkan-sdk-1.4.341`, matching the SDK's
+  `libvulkan-volk-dev` 1.4.341) with `-DVOLK_INSTALL=ON`.
 
 ## Keeping in sync with the SDK
 
