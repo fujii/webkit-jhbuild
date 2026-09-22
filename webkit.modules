@@ -193,8 +193,12 @@
 
   <!-- Vulkan meta-loader. WebKit's find_package(volk CONFIG) expects the
        volk::volk / volk::volk_headers targets, which Fedora's GNU Radio
-       "volk" package does not provide. This is zeux/volk (not GNU Radio). -->
-  <cmake id="volk" cmakeargs="-DVOLK_INSTALL=ON">
+       "volk" package does not provide. This is zeux/volk (not GNU Radio).
+       volk is a static library and gets linked into libWPEWebKit.so, so it has
+       to be built with -fPIC: without it, linking the library fails with
+       "relocation R_X86_64_32 cannot be used against local symbol" (ld.lld) or
+       "failed to set dynamic section sizes: bad value" (ld.bfd). -->
+  <cmake id="volk" cmakeargs="-DVOLK_INSTALL=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON">
     <branch repo="github.com"
             checkoutdir="volk"
             module="zeux/volk.git"
