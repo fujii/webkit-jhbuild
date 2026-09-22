@@ -4,7 +4,7 @@ JHBUILD := jhbuild
 JH_BUILDRC := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))jhbuildrc
 TOP_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
-.PHONY: all clean list requirements
+.PHONY: all build clean list requirements
 
 all: build
 
