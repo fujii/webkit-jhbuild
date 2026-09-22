@@ -43,13 +43,37 @@ The host needs these tools to run `jhbuild build`. All are looked up on `PATH`
 | `bison` / `flex` | `bison flex` | |
 | `pkg-config` | `pkgconfig-pkg-config` | |
 | `git` | `git` | |
+| `XML::Parser` | `perl-XML-Parser` | `jhbuild sanitycheck` requires it |
+| `sassc` | `sassc` | `jhbuild build` sysdeps check (gtk4/libadwaita) |
 
-On a minimal Fedora host the missing pieces are usually:
+The table above covers only build *tools*. The moduleset also needs the
+`-devel` packages for the host libraries those modules link against
+(glib, gtk4, GStreamer, X11, ...). On Fedora the easiest way to install them
+is WebKit's own dependency installer, which pulls in everything the moduleset
+expects:
 
 ```console
-sudo dnf install meson ninja cmake autoconf automake libtool \
-  gettext gettext-devel gtk-doc rust cargo cargo-c bison flex pkgconf-pkg-config git
+sudo $webkit_checkout_dir/Tools/wpe/install-dependencies -y --skip-unavailable
 ```
+
+(`libwpe-devel` and `wpebackend-fdo-devel` are not packaged on Fedora; jhbuild
+builds those from source, which is why `--skip-unavailable` is needed.)
+
+That still leaves a handful of packages that neither
+`install-requirements-dnf` nor the WebKit dependency script installs. On a
+minimal Fedora host:
+
+```console
+sudo dnf install -y perl-XML-Parser sassc nasm json-glib-devel \
+  libXcursor-devel libXdamage-devel libXfixes-devel libXinerama-devel \
+  libXcomposite-devel libXtst-devel libxkbcommon-x11-devel \
+  iso-codes-devel appstream-devel glslc
+```
+
+The usual culprits on a bare Fedora install (`nasm` = dav1d,
+`json-glib-devel` = sparkle-cdm, `libXcursor-devel`/`libXdamage-devel`/`glslc`
+= gtk4, `appstream-devel` = libadwaita) map directly to the modules that fail
+when they are absent.
 
 ### gettext m4 macros
 
