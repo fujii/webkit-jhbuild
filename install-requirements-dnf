@@ -6,7 +6,7 @@ set -euo pipefail
 sudo -n dnf install -y \
   meson ninja cmake autoconf automake libtool \
   gettext gettext-devel gtk-doc rust cargo cargo-c bison flex \
-  pkgconf-pkg-config git
+  pkgconf-pkg-config git perl-XML-Parser sassc
 
 # gettext-devel keeps gettext.m4 under gettext's private m4/ directory, where
 # aclocal does not search by default. Expose it so autotools modules that run
